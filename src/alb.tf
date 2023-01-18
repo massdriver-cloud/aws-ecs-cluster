@@ -74,14 +74,14 @@ resource "aws_lb" "main" {
 // Certificates
 module "default_acm_certificate" {
   count                     = local.create_alb ? 1 : 0
-  source                    = "github.com/massdriver-cloud/terraform-modules//aws/acm-certificate?ref=61c8c08"
+  source                    = "github.com/massdriver-cloud/terraform-modules//aws/acm-certificate?ref=21b84cd"
   domain_name               = local.r53_zone_ids_to_domains[local.default_route53_zone_id]
   hosted_zone_id            = local.default_route53_zone_id
   subject_alternative_names = ["*.${local.r53_zone_ids_to_domains[local.default_route53_zone_id]}"]
 }
 
 module "additional_acm_certificates" {
-  source                    = "github.com/massdriver-cloud/terraform-modules//aws/acm-certificate?ref=61c8c08"
+  source                    = "github.com/massdriver-cloud/terraform-modules//aws/acm-certificate?ref=21b84cd"
   for_each                  = local.additional_route53_zone_ids
   domain_name               = local.r53_zone_ids_to_domains[each.key]
   hosted_zone_id            = each.key
