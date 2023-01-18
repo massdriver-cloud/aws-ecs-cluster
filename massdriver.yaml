@@ -1,0 +1,204 @@
+schema: draft-07
+name: "aws-ecs-cluster"
+description: "AWS ECS is Amazon's fully managed container orchestration service, making it easy for users to deploy, manage and scale containerized workloads."
+source_url: github.com/massdriver-cloud/aws-ecs-cluster
+access: "private"
+type: "infrastructure"
+
+
+params:
+  examples:
+    - __name: Development
+      cluster:
+        instances:
+          - name: instances
+            instance_type: t3.medium
+            min_size: 1
+            max_size: 10
+    - __name: Production
+      cluster:
+        instances:
+          - name: instances
+            instance_type: t3.medium
+            min_size: 1
+            max_size: 10
+  required:
+    - cluster
+  properties:
+    cluster:
+      title: Cluster Configuration
+      type: object
+      required:
+        - instances
+        - ingress
+      properties:
+        instances:
+          type: array
+          title: ECS Container Instances
+          description: AWS EC2 instances to associate with your ECS cluster for running workloads
+          items:
+            type: object
+            title: Container Instance
+            required:
+              - name
+              - instance_type
+              - min_size
+              - max_size
+            properties:
+              name:
+                type: string
+                title: Name
+                description: The name of the node group
+                pattern: "[a-z]{1,}[a-z0-9]{0,19}"
+                message:
+                  pattern: Name must be between 1 and 20 lowercase letters or numbers, and must start with a letter.
+                default: ""
+              min_size:
+                type: integer
+                title: Minimum Size
+                description: Minimum number of instances in the node group
+                default: 1
+                minimum: 0
+              max_size:
+                type: integer
+                title: Maximum Size
+                description: Maximum number of instances in the node group
+                default: 10
+                minimum: 0
+              instance_type:
+                title: Instance type
+                description: Instance type to use in the node group
+                type: string
+                oneOf:
+                  - title: C5 High-CPU Large (2 vCPUs, 4.0 GiB)
+                    const: c5.large
+                  - title: C5 High-CPU Extra Large (4 vCPUs, 8.0 GiB)
+                    const: c5.xlarge
+                  - title: C5 High-CPU Double Extra Large (8 vCPUs, 16.0 GiB)
+                    const: c5.2xlarge
+                  - title: C5 High-CPU Quadruple Extra Large (16 vCPUs, 32.0 GiB)
+                    const: c5.4xlarge
+                  - title: C5 High-CPU 9xlarge (36 vCPUs, 72.0 GiB)
+                    const: c5.9xlarge
+                  - title: C5 High-CPU 12xlarge (48 vCPUs, 96.0 GiB)
+                    const: c5.12xlarge
+                  - title: C5 High-CPU 18xlarge (72 vCPUs, 144.0 GiB)
+                    const: c5.18xlarge
+                  - title: C5 High-CPU 24xlarge (96 vCPUs, 192.0 GiB)
+                    const: c5.24xlarge
+                  - title: M5 General Purpose Large (2 vCPUs, 8.0 GiB)
+                    const: m5.large
+                  - title: M5 General Purpose Extra Large (4 vCPUs, 16.0 GiB)
+                    const: m5.xlarge
+                  - title: M5 General Purpose Double Extra Large (8 vCPUs, 32.0 GiB)
+                    const: m5.2xlarge
+                  - title: M5 General Purpose Quadruple Extra Large (16 vCPUs, 64.0 GiB)
+                    const: m5.4xlarge
+                  - title: M5 General Purpose Eight Extra Large (32 vCPUs, 128.0 GiB)
+                    const: m5.8xlarge
+                  - title: M5 General Purpose 12xlarge (48 vCPUs, 192.0 GiB)
+                    const: m5.12xlarge
+                  - title: M5 General Purpose 16xlarge (64 vCPUs, 256.0 GiB)
+                    const: m5.16xlarge
+                  - title: M5 General Purpose 24xlarge (96 vCPUs, 384.0 GiB)
+                    const: m5.24xlarge
+                  - title: T3 Small (2 vCPUs for a 4h 48m burst, 2.0 GiB)
+                    const: t3.small
+                  - title: T3 Medium (2 vCPUs for a 4h 48m burst, 4.0 GiB)
+                    const: t3.medium
+                  - title: T3 Large (2 vCPUs for a 7h 12m burst, 8.0 GiB)
+                    const: t3.large
+                  - title: T3 Extra Large (4 vCPUs for a 9h 36m burst, 16.0 GiB)
+                    const: t3.xlarge
+                  - title: T3 Double Extra Large (8 vCPUs for a 9h 36m burst, 32.0 GiB)
+                    const: t3.2xlarge
+                  - title: P2 General Purpose GPU Extra Large (4 vCPUs, 61.0 GiB)
+                    const: p2.xlarge
+                  - title: P2 General Purpose GPU Eight Extra Large (32 vCPUs, 488.0 GiB)
+                    const: p2.8xlarge
+                  - title: P2 General Purpose GPU 16xlarge (64 vCPUs, 732.0 GiB)
+                    const: p2.16xlarge
+        ingress:
+          title: Ingress
+          description: Configure network ingress for your ECS cluster
+          type: object
+          properties:
+            enable_ingress:
+              title: Enable Ingress
+              description: Enabling ingress will create an ALB for your cluster to securely route traffic to your workloads
+              type: boolean
+              default: false
+          dependencies:
+            enable_ingress:
+              oneOf:
+                - properties:
+                    enable_ingress:
+                      const: false
+                - properties:
+                    enable_ingress:
+                      const: true
+                    default_route53_hosted_zone:
+                      title: Default Route53 Hosted Zone
+                      description: Select the default Route53 domain to associate with this ECS cluster. This will allow the cluster to securely route HTTPS traffic to workloads hosted under this domain.
+                      $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/aws-arn.json
+                    additional_route53_hosted_zones:
+                      type: array
+                      title: Additional Route53 Hosted Zones
+                      description: Additional Route53 Hosted Zones to associate with this cluster.
+                      default: []
+                      items:
+                        title: "Route53 Hosted Zone"
+                        description: ""
+                        $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/aws-arn.json
+                  required:
+                    - default_route53_hosted_zone
+
+
+
+
+
+connections:
+  required:
+    - aws_authentication
+    - vpc
+  properties:
+    aws_authentication:
+      $ref: massdriver/aws-iam-role
+    vpc:
+      $ref: massdriver/aws-vpc
+
+
+artifacts:
+  properties: {}
+
+
+ui:
+  ui:order:
+    - cluster
+    - "*"
+  cluster:
+    ui:order:
+      - instances
+      - ingress
+      - "*"
+    instances:
+      items:
+        ui:order:
+          - name
+          - instance_type
+          - min_size
+          - max_size
+          - "*"
+    ingress:
+      ui:order:
+        - enable_ingress
+        - default_route53_hosted_zone
+        - additional_route53_hosted_zones
+        - "*"
+      default_route53_hosted_zone:
+        ui:field: dnsZonesDropdown
+        cloud: aws
+      additional_route53_hosted_zones:
+        items:
+          ui:field: dnsZonesDropdown
+          cloud: aws
