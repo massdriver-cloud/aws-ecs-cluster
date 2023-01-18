@@ -1,28 +1,11 @@
 
 locals {
-  # ec2_capacity_providers = {
-  #   "bar" = {
-  #     min_size = 1
-  #     max_size = 10
-  #   }
-  # }
-
   user_data = <<EOT
 #!/bin/bash
 echo ECS_CLUSTER="${var.md_metadata.name_prefix}" >> /etc/ecs/ecs.config
 echo ECS_ENABLE_CONTAINER_METADATA=true >> /etc/ecs/ecs.config
 echo ECS_POLL_METRICS=true >> /etc/ecs/ecs.config
 EOT
-  #     name => <<EOT
-  # #!/bin/bash
-  # echo ECS_CLUSTER="${local.cluster_name}" >> /etc/ecs/ecs.config
-  # echo ECS_ENABLE_CONTAINER_METADATA=true >> /etc/ecs/ecs.config
-  # echo ECS_POLL_METRICS=true >> /etc/ecs/ecs.config
-  # echo ECS_ENABLE_SPOT_INSTANCE_DRAINING=${provider.instance_market_options != null && provider.mixed_instances_policy != null} >> /etc/ecs/ecs.config
-  # echo ECS_WARM_POOLS_CHECK=${provider.warm_pool != null} >> /etc/ecs/ecs.config
-  # ${replace(provider.user_data, "#!/bin/bash", "")}
-  # EOT
-
 }
 
 data "aws_ssm_parameter" "ami" {
@@ -49,7 +32,6 @@ resource "aws_launch_template" "main" {
     enabled = true
   }
 
-  # https://github.com/terraform-providers/terraform-provider-aws/issues/4570
   network_interfaces {
     description                 = "${var.md_metadata.name_prefix}-${each.key} network interface"
     device_index                = 0

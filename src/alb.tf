@@ -69,12 +69,6 @@ resource "aws_lb" "main" {
   subnets            = local.public_subnet_ids
 
   enable_deletion_protection = false
-
-  #   access_logs {
-  #     bucket  = aws_s3_bucket.lb_logs.bucket
-  #     prefix  = "test-lb"
-  #     enabled = true
-  #   }
 }
 
 // Certificates
