@@ -136,3 +136,12 @@ resource "aws_lb_listener_certificate" "example" {
   listener_arn    = aws_lb_listener.https.0.arn
   certificate_arn = each.value.certificate_arn
 }
+
+resource "aws_route53_record" "main" {
+  for_each = toset(lookup(var.ingress, "dns_records", []))
+  zone_id  = local.default_route53_zone_id
+  name     = each.key
+  type     = "CNAME"
+  ttl      = 300
+  records  = [aws_lb.main.dns_name]
+}

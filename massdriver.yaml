@@ -150,6 +150,16 @@ params:
                         title: "Route53 Hosted Zone"
                         description: ""
                         $ref: https://raw.githubusercontent.com/massdriver-cloud/artifact-definitions/main/definitions/types/aws-arn.json
+                    dns_records:
+                      type: array
+                      title: DNS Records
+                      description: "Specify a list of DNS records you'd like to associate with the ALB. If you will be running multiple applications under the same subdomain (www.yourdomain.com), its best to specify them here. If your applications are under unique subdomains (foo.yourdomain.com) you can specify them at the application level. **Note:** These DNS records should fall under one of the DNS zones specified earlier."
+                      default: []
+                      items:
+                        type: string
+                        pattern: ^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$
+                        message:
+                          pattern: DNS records should consist of letters, numbers, periods and hyphens, such as www.example.com
                   required:
                     - default_route53_hosted_zone
 
