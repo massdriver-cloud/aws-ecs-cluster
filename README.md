@@ -84,6 +84,9 @@ Form input parameters for configuring a bundle for deployment.
           - P2 General Purpose GPU Extra Large (4 vCPUs, 61.0 GiB)
           - P2 General Purpose GPU Eight Extra Large (32 vCPUs, 488.0 GiB)
           - P2 General Purpose GPU 16xlarge (64 vCPUs, 732.0 GiB)
+          - G5 Single GPU Extra Large (4 vCPUs, 16 GiB)
+          - G5 Single GPU Two Extra Large (8 vCPUs, 32 GiB)
+          - G5 Single GPU Four Extra Large (16 vCPUs, 64 GiB)
       - **`max_size`** *(integer)*: Maximum number of instances in the node group. Minimum: `0`. Default: `10`.
       - **`min_size`** *(integer)*: Minimum number of instances in the node group. Minimum: `0`. Default: `1`.
       - **`name`** *(string)*: The name of the node group. Default: ``.

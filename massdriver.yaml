@@ -118,6 +118,12 @@ params:
                     const: p2.8xlarge
                   - title: P2 General Purpose GPU 16xlarge (64 vCPUs, 732.0 GiB)
                     const: p2.16xlarge
+                  - title: G5 Single GPU Extra Large (4 vCPUs, 16 GiB)
+                    const: g5.xlarge
+                  - title: G5 Single GPU Two Extra Large (8 vCPUs, 32 GiB)
+                    const: g5.2xlarge
+                  - title: G5 Single GPU Four Extra Large (16 vCPUs, 64 GiB)
+                    const: g5.4xlarge
         ingress:
           title: Ingress
           description: Configure network ingress for your ECS cluster
