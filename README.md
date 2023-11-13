@@ -296,6 +296,233 @@ Resources created by this bundle that can be connected to other bundles.
 <!-- ARTIFACTS:START -->
 ## Properties
 
+- **`cluster`** *(object)*: Cannot contain additional properties.
+  - **`data`** *(object)*
+    - **`capabilities`** *(object)*
+      - **`ingress`** *(array)*: Default: `[]`.
+        - **Items** *(object)*
+          - **`listeners`** *(array)*
+            - **Items** *(object)*
+              - **`arn`** *(string)*: Amazon Resource Name.
+
+                Examples:
+                ```json
+                "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+                ```
+
+                ```json
+                "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+                ```
+
+              - **`domains`** *(array)*: Default: `[]`.
+                - **Items** *(string)*
+              - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
+              - **`protocol`** *(string)*: Must be one of: `['http', 'https']`.
+          - **`load_balancer_arn`** *(string)*: Amazon Resource Name.
+
+            Examples:
+            ```json
+            "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+            ```
+
+            ```json
+            "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+            ```
+
+          - **`security_group_arn`** *(string)*: Amazon Resource Name.
+
+            Examples:
+            ```json
+            "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+            ```
+
+            ```json
+            "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+            ```
+
+    - **`infrastructure`** *(object)*
+      - **`arn`** *(string)*: Amazon Resource Name.
+
+        Examples:
+        ```json
+        "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+        ```
+
+        ```json
+        "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+        ```
+
+      - **`vpc`** *(object)*: . Cannot contain additional properties.
+        - **`data`** *(object)*
+          - **`infrastructure`** *(object)*
+            - **`arn`** *(string)*: Amazon Resource Name.
+
+              Examples:
+              ```json
+              "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+              ```
+
+              ```json
+              "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+              ```
+
+            - **`cidr`** *(string)*
+
+              Examples:
+              ```json
+              "10.100.0.0/16"
+              ```
+
+              ```json
+              "192.24.12.0/22"
+              ```
+
+            - **`internal_subnets`** *(array)*
+              - **Items** *(object)*: AWS VCP Subnet.
+                - **`arn`** *(string)*: Amazon Resource Name.
+
+                  Examples:
+                  ```json
+                  "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+                  ```
+
+                  ```json
+                  "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+                  ```
+
+                - **`aws_zone`** *(string)*: AWS Availability Zone.
+
+                  Examples:
+                - **`cidr`** *(string)*
+
+                  Examples:
+                  ```json
+                  "10.100.0.0/16"
+                  ```
+
+                  ```json
+                  "192.24.12.0/22"
+                  ```
+
+
+                Examples:
+            - **`private_subnets`** *(array)*
+              - **Items** *(object)*: AWS VCP Subnet.
+                - **`arn`** *(string)*: Amazon Resource Name.
+
+                  Examples:
+                  ```json
+                  "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+                  ```
+
+                  ```json
+                  "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+                  ```
+
+                - **`aws_zone`** *(string)*: AWS Availability Zone.
+
+                  Examples:
+                - **`cidr`** *(string)*
+
+                  Examples:
+                  ```json
+                  "10.100.0.0/16"
+                  ```
+
+                  ```json
+                  "192.24.12.0/22"
+                  ```
+
+
+                Examples:
+            - **`public_subnets`** *(array)*
+              - **Items** *(object)*: AWS VCP Subnet.
+                - **`arn`** *(string)*: Amazon Resource Name.
+
+                  Examples:
+                  ```json
+                  "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+                  ```
+
+                  ```json
+                  "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+                  ```
+
+                - **`aws_zone`** *(string)*: AWS Availability Zone.
+
+                  Examples:
+                - **`cidr`** *(string)*
+
+                  Examples:
+                  ```json
+                  "10.100.0.0/16"
+                  ```
+
+                  ```json
+                  "192.24.12.0/22"
+                  ```
+
+
+                Examples:
+        - **`specs`** *(object)*
+          - **`aws`** *(object)*: .
+            - **`region`** *(string)*: AWS Region to provision in.
+
+              Examples:
+              ```json
+              "us-west-2"
+              ```
+
+    - **`security`** *(object)*: Informs downstream services of network and/or IAM policies. Cannot contain additional properties.
+      - **`iam`** *(object)*: IAM Policies. Cannot contain additional properties.
+        - **`^[a-z]+[a-z_]*[a-z]+$`** *(object)*
+          - **`policy_arn`** *(string)*: AWS IAM policy ARN.
+
+            Examples:
+            ```json
+            "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+            ```
+
+            ```json
+            "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+            ```
+
+      - **`identity`** *(object)*: For instances where IAM policies must be attached to a role attached to an AWS resource, for instance AWS Eventbridge to Firehose, this attribute should be used to allow the downstream to attach it's policies (Firehose) directly to the IAM role created by the upstream (Eventbridge). It is important to remember that connections in massdriver are one way, this scheme perserves the dependency relationship while allowing bundles to control the lifecycles of resources under it's management. Cannot contain additional properties.
+        - **`role_arn`** *(string)*: ARN for this resources IAM Role.
+
+          Examples:
+          ```json
+          "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+          ```
+
+          ```json
+          "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+          ```
+
+      - **`network`** *(object)*: AWS security group rules to inform downstream services of ports to open for communication. Cannot contain additional properties.
+        - **`^[a-z-]+$`** *(object)*
+          - **`arn`** *(string)*: Amazon Resource Name.
+
+            Examples:
+            ```json
+            "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+            ```
+
+            ```json
+            "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+            ```
+
+          - **`port`** *(integer)*: Port number. Minimum: `0`. Maximum: `65535`.
+          - **`protocol`** *(string)*: Must be one of: `['tcp', 'udp']`.
+  - **`specs`** *(object)*
+    - **`aws`** *(object)*: .
+      - **`region`** *(string)*: AWS Region to provision in.
+
+        Examples:
+        ```json
+        "us-west-2"
+        ```
+
 <!-- ARTIFACTS:END -->
 
 </details>

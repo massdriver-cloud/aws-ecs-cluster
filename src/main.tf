@@ -8,7 +8,7 @@ locals {
   # The current workaround is to remove this dependency and hack around it using a time_sleep.
   capacity_providers = distinct(concat(
     #[for key, value in aws_ecs_capacity_provider.ec2 : value.name],     <-- This is how it should be if not for the issue ^
-    [for instance in var.cluster.instances : "${var.md_metadata.name_prefix}-${instance.name}"],
+    [for instance in var.cluster.instances : instance.name],
     ["FARGATE",
     "FARGATE_SPOT"]
   ))
