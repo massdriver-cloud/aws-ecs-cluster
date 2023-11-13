@@ -15,7 +15,8 @@ data "aws_ssm_parameter" "ami" {
 resource "aws_launch_template" "main" {
   for_each = { for instance in var.cluster.instances : instance.name => instance }
 
-  name_prefix   = "${var.md_metadata.name_prefix}-${each.key}"
+  // remove md_metadata.name_prefix if it's already present (naming fix 11/12/23)
+  name_prefix   = "${var.md_metadata.name_prefix}-${trimprefix(each.key, "${var.md_metadata.name_prefix}-")}"
   user_data     = base64encode(local.user_data)
   instance_type = each.value.instance_type
   image_id      = data.aws_ssm_parameter.ami.value
@@ -33,7 +34,8 @@ resource "aws_launch_template" "main" {
   }
 
   network_interfaces {
-    description                 = "${var.md_metadata.name_prefix}-${each.key} network interface"
+    // remove md_metadata.name_prefix if it's already present (naming fix 11/12/23)
+    description                 = "${var.md_metadata.name_prefix}-${trimprefix(each.key, "${var.md_metadata.name_prefix}-")} network interface"
     device_index                = 0
     associate_public_ip_address = false
     delete_on_termination       = true
@@ -54,7 +56,8 @@ resource "aws_launch_template" "main" {
       resource_type = tag_specifications.key
       tags = merge({
         AmazonECSManaged = true
-        Name             = "${var.md_metadata.name_prefix}-${each.key}"
+        // remove md_metadata.name_prefix if it's already present (naming fix 11/12/23)
+        Name = "${var.md_metadata.name_prefix}-${trimprefix(each.key, "${var.md_metadata.name_prefix}-")}"
         },
         var.md_metadata.default_tags,
       )
@@ -68,7 +71,7 @@ resource "aws_launch_template" "main" {
 
 resource "aws_ecs_capacity_provider" "ec2" {
   for_each = { for instance in var.cluster.instances : instance.name => instance }
-  name     = "${var.md_metadata.name_prefix}-${each.key}"
+  name     = each.key
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.ec2[each.key].arn
@@ -88,7 +91,8 @@ resource "aws_ecs_capacity_provider" "ec2" {
 resource "aws_autoscaling_group" "ec2" {
   for_each = { for instance in var.cluster.instances : instance.name => instance }
 
-  name = "${var.md_metadata.name_prefix}-${each.key}"
+  // remove md_metadata.name_prefix if it's already present (naming fix 11/12/23)
+  name = "${var.md_metadata.name_prefix}-${trimprefix(each.key, "${var.md_metadata.name_prefix}-")}"
 
   min_size = each.value.min_size
   max_size = each.value.max_size
@@ -116,7 +120,8 @@ resource "aws_autoscaling_group" "ec2" {
   dynamic "tag" {
     for_each = merge({
       AmazonECSManaged = true
-      Name             = "${var.md_metadata.name_prefix}-${each.key}"
+      // remove md_metadata.name_prefix if it's already present (naming fix 11/12/23)
+      Name = "${var.md_metadata.name_prefix}-${trimprefix(each.key, "${var.md_metadata.name_prefix}-")}"
       },
       var.md_metadata.default_tags,
     )
