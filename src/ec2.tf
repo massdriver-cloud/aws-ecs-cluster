@@ -86,10 +86,6 @@ resource "aws_ecs_capacity_provider" "ec2" {
       target_capacity           = 100
     }
   }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_autoscaling_group" "ec2" {
