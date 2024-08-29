@@ -17,7 +17,7 @@ AWS ECS is Amazon's fully managed container orchestration service, making it eas
 
 ## Design
 
-For detailed information, check out our [Operator Guide](operator.mdx) for this bundle.
+For detailed information, check out our [Operator Guide](operator.md) for this bundle.
 
 ## Usage
 
@@ -54,6 +54,9 @@ Form input parameters for configuring a bundle for deployment.
           - C5 High-CPU 12xlarge (48 vCPUs, 96.0 GiB)
           - C5 High-CPU 18xlarge (72 vCPUs, 144.0 GiB)
           - C5 High-CPU 24xlarge (96 vCPUs, 192.0 GiB)
+          - M7g General Purpose Medium (1 vCPUs, 4.0 GiB)
+          - M7g General Purpose Large (2 vCPUs, 8.0 GiB)
+          - M7g General Purpose Extra Large (4 vCPUs, 16.0 GiB)
           - M5 General Purpose Large (2 vCPUs, 8.0 GiB)
           - M5 General Purpose Extra Large (4 vCPUs, 16.0 GiB)
           - M5 General Purpose Double Extra Large (8 vCPUs, 32.0 GiB)
