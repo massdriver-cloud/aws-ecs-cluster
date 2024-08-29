@@ -11,7 +11,7 @@ Amazon Elastic Container Service (ECS) is a fully managed container orchestratio
 5. **Auto Scaling**: ECS capacity providers are managed in conjunction with auto-scaling groups for instance management.
 6. **IAM Roles and Policies**: Instance profile roles are created and attached with necessary policies.
 7. **Cluster Insights**: Container insights are enabled to provide better analytics and monitoring for the cluster.
-8. **Workarounds**: Implemented with a time sleep resource to coordinate ASG and capacity providers due to existing Terraform provider issues.
+8. **Fargate**: [AWS Fargate](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html) is a serverless option to run containerized workloads without EC2 instances
 
 ### Runbook
 
@@ -21,7 +21,7 @@ If your ECS cluster instances are not starting, ensure that the necessary permis
 
 1. **Check ECS Agent Logs on EC2 Instances**
 
-   SSH into one of your ECS instances and check the ECS agent logs. 
+   SSH into one of your ECS instances and check the ECS agent logs.
 
    ```sh
    sudo cat /var/log/ecs/ecs-agent.log
@@ -103,5 +103,3 @@ If your ALB is not serving traffic correctly, follow these steps:
    ```
 
 Ensure you follow these troubleshooting steps to maintain the health and functionality of your ECS cluster.
-
-
