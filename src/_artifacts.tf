@@ -15,9 +15,8 @@ locals {
 }
 
 resource "massdriver_artifact" "cluster" {
-  field                = "cluster"
-  provider_resource_id = aws_ecs_cluster.main.arn
-  name                 = "ECS Cluster artifact for ${var.md_metadata.name_prefix}"
+  field = "cluster"
+  name  = "ECS Cluster artifact for ${var.md_metadata.name_prefix}"
   artifact = jsonencode(
     {
       data = {
