@@ -167,15 +167,15 @@ connections:
   - vpc
   properties:
     aws_authentication:
-      "$ref": massdriver/aws-iam-role
+      "$ref": aws-iam-role
     vpc:
-      "$ref": massdriver/aws-vpc
+      "$ref": aws-vpc
 artifacts:
   required:
   - cluster
   properties:
     cluster:
-      "$ref": massdriver/aws-ecs-cluster
+      "$ref": aws-ecs-cluster
 ui:
   ui:order:
   - cluster
